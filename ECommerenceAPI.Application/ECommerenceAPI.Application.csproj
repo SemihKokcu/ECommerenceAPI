@@ -10,4 +10,8 @@
     <ProjectReference Include="..\ECommerenceAPI.Domain\ECommerenceAPI.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Abstraction\" />
+  </ItemGroup>
+
 </Project>
