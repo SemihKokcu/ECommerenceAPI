@@ -7,11 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ECommerenceAPI.Domain\ECommerenceAPI.Domain.csproj" />
+    <Compile Remove="Abstraction\**" />
+    <EmbeddedResource Remove="Abstraction\**" />
+    <None Remove="Abstraction\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Abstraction\" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ECommerenceAPI.Domain\ECommerenceAPI.Domain.csproj" />
   </ItemGroup>
 
 </Project>
