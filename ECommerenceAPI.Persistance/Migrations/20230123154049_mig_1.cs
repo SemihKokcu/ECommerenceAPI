@@ -27,7 +27,7 @@ namespace ECommerenceAPI.Persistance.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Products",
-                columns: table => new
+                columns: table => new 
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),

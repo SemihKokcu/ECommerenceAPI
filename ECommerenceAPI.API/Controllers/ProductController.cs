@@ -26,7 +26,7 @@ namespace ECommerenceAPI.API.Controllers
         // bu metot tipi Task yani async bir tip olmadığından Ioc containerda 
         // nesenmiz Scoped olarak yaratılır ve burada bu metot async beklemediği için
         // nesne daha işini yapamadan imha edilir
-        public async Task Get() 
+        public async Task<IActionResult> Get() 
         {
             //await _productWriteRepository.AddRangeAsync(new()
             //{
@@ -48,9 +48,11 @@ namespace ECommerenceAPI.API.Controllers
             //_orderWriteRepository.AddAsync(new() { Description = "bla bla 2", Address = "Zong", CustomerId=customerId });
             //await _orderWriteRepository.SaveAsync();
 
-            Order order =  await _orderReadRepository.GetByIdAsync("51f79047-daa0-423a-a543-a829489b37ef");
-            order.Address = "İstanbul";
-            await _orderWriteRepository.SaveAsync();
+            //Order order =  await _orderReadRepository.GetByIdAsync("51f79047-daa0-423a-a543-a829489b37ef");
+            //order.Address = "İstanbul";
+            //await _orderWriteRepository.SaveAsync();
+
+            return Ok("Merhaba");
 
         }
 
