@@ -16,7 +16,7 @@ namespace ECommerenceAPI.Persistance
         public static void AddPersistanceServices(this IServiceCollection services)
         {
             services.AddDbContext<ECommerenceAPIDbContext>(options => options.UseNpgsql(Configration.ConnectionString),
-            ServiceLifetime.Singleton
+            ServiceLifetime.Scoped
                 );
 
 

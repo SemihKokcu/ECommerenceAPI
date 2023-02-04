@@ -52,7 +52,7 @@ namespace ECommerenceAPI.API.Controllers
             //order.Address = "İstanbul";
             //await _orderWriteRepository.SaveAsync();
 
-            return Ok("Merhaba");
+            return Ok("merhaba");
 
         }
 

@@ -1,4 +1,7 @@
+﻿using ECommerenceAPI.Application.Validators;
+using ECommerenceAPI.Infrastructure.Filters;
 using ECommerenceAPI.Persistance;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +13,11 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
 
 ));
 
-
-builder.Services.AddControllers();
+//kendi filterımızı ekledik
+builder.Services.AddControllers(options=>options.Filters.Add<ValidationFilter>())// reflection ile bütün validatorleri ekleyecek otoatik
+    .AddFluentValidation(conf=>conf.RegisterValidatorsFromAssemblyContaining<CreateProductValidator>())
+    .ConfigureApiBehaviorOptions(options=>options.SuppressModelStateInvalidFilter=true); // mevcut olan default filterları görmezden gelmesi için yazdık. Yani 
+// api'de controllere gelmeden oto hatalrı yakalamamsı için
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -22,6 +28,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 
 app.UseCors();
 app.UseHttpsRedirection();

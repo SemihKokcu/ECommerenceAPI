@@ -33,18 +33,31 @@ namespace ECommerenceAPI.API.Controllers
             return Ok(await _productReadRepository.GetByIdAsync(id,false));
         }
 
-        [HttpPost] // gelen neseneyi entity işe karşışamak doğru değildir viewmodeller oluşturup karşılaiırız. CQRS pattern da request ile alıcaz 
+        //[HttpPost(Name ="add")] // gelen neseneyi entity işe karşışamak doğru değildir viewmodeller oluşturup karşılaiırız. CQRS pattern da request ile alıcaz 
+        //public async Task<IActionResult> Add(VM_Create_Product model)
+        //{
+
+        //    await _productWriteRepository.AddAsync(new()
+        //    {
+        //        Name = model.Name,
+        //        Price= model.Price,
+        //        Stock=model.Stock,
+        //    });
+        //    await _productWriteRepository.SaveAsync();
+        //    //return Ok();
+        //    return Ok();
+        //}
+        [HttpPost]
         public async Task<IActionResult> Post(VM_Create_Product model)
         {
-
-            await _productWriteRepository.AddAsync(new()
+            
+            await _productWriteRepository.AddAsync(new Product()
             {
                 Name = model.Name,
-                Price= model.Price,
-                Stock=model.Stock,
+                Price = model.Price,
+                Stock = model.Stock
             });
             await _productWriteRepository.SaveAsync();
-            //return Ok();
             return StatusCode((int)HttpStatusCode.Created);
         }
 

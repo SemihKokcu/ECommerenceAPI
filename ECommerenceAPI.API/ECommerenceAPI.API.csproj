@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ECommerenceAPI.Application\ECommerenceAPI.Application.csproj" />
+    <ProjectReference Include="..\ECommerenceAPI.Infrastucture\ECommerenceAPI.Infrastructure.csproj" />
     <ProjectReference Include="..\ECommerenceAPI.Persistance\ECommerenceAPI.Persistance.csproj" />
   </ItemGroup>
 
