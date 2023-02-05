@@ -1,4 +1,5 @@
 ﻿using ECommerenceAPI.Application.Repositories;
+using ECommerenceAPI.Application.RequestParametres;
 using ECommerenceAPI.Application.ViewModels.Products;
 using ECommerenceAPI.Domain.Entities;
 using Microsoft.AspNetCore.Http;
@@ -21,10 +22,20 @@ namespace ECommerenceAPI.API.Controllers
             _productReadRepository = productReadRepository;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
+        [HttpGet]                               //query den gönderdik
+        public async Task<IActionResult> GetAll([FromQuery]Pagination pagination)
         {
-            return Ok(_productReadRepository.GetAll(false)); // veri get ederken trackinge gerek yok fasle verdik
+            var totalCount = _productReadRepository.GetAll(false).Count();
+            var products= _productReadRepository.GetAll(false).Skip(pagination.Page * pagination.Size).Take(pagination.Size).Select(p => new
+            {
+                p.Id,
+                p.Name,
+                p.Stock,
+                p.Price,
+                p.CreateDate,
+                p.UpdateDate
+            });
+            return Ok(new { totalCount,products }); // veri get ederken trackinge gerek yok fasle verdik
         }
 
         [HttpGet("{id}")]
