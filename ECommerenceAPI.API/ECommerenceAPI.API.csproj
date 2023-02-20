@@ -24,4 +24,8 @@
     <ProjectReference Include="..\ECommerenceAPI.Persistance\ECommerenceAPI.Persistance.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

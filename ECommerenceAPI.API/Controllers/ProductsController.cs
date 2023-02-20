@@ -12,12 +12,14 @@ namespace ECommerenceAPI.API.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
+        readonly private IWebHostEnvironment _webHostEnvironment;
         readonly private IProductWriteRepository _productWriteRepository;
         readonly private IProductReadRepository _productReadRepository;
 
 
-        public ProductsController(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository)
+        public ProductsController(IWebHostEnvironment webHostEnvironment,IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository)
         {
+            _webHostEnvironment = webHostEnvironment;
             _productWriteRepository = productWriteRepository;
             _productReadRepository = productReadRepository;
         }
@@ -90,6 +92,32 @@ namespace ECommerenceAPI.API.Controllers
         {
             await _productWriteRepository.RemoveAsync(id);
             await _productWriteRepository.SaveAsync();
+            return Ok();
+        }
+
+        //action girmeliyiz artık bir tane post olduğundan artık aciton adı girmek zorundayız
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Upload()
+        {
+            //wwwroot/resource/product-image
+            string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "resource/product-images");
+
+            if (!Directory.Exists(uploadPath))
+            {
+                Directory.CreateDirectory(uploadPath);
+            }
+            Random random = new Random();
+            foreach (IFormFile file in Request.Form.Files) 
+            {
+                string fullPath = Path.Combine(uploadPath, $"{random.Next()}{Path.GetExtension(file.FileName)}");
+                using FileStream fileStream = new FileStream(fullPath, FileMode.Create, FileAccess.Write, FileShare.None,1024*1024,useAsync:false);
+                
+                await file.CopyToAsync(fileStream);
+                await fileStream.FlushAsync();
+
+                //dosya kaydı için path aldık rastegel isim verdik filestram kullamdık ve sonra onu serbest bıraktık
+
+            }
             return Ok();
         }
     }
