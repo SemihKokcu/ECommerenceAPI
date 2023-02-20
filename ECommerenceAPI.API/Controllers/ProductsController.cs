@@ -1,5 +1,6 @@
 ﻿using ECommerenceAPI.Application.Repositories;
 using ECommerenceAPI.Application.RequestParametres;
+using ECommerenceAPI.Application.Services;
 using ECommerenceAPI.Application.ViewModels.Products;
 using ECommerenceAPI.Domain.Entities;
 using Microsoft.AspNetCore.Http;
@@ -15,13 +16,14 @@ namespace ECommerenceAPI.API.Controllers
         readonly private IWebHostEnvironment _webHostEnvironment;
         readonly private IProductWriteRepository _productWriteRepository;
         readonly private IProductReadRepository _productReadRepository;
+        readonly IFileService _fileService;
 
-
-        public ProductsController(IWebHostEnvironment webHostEnvironment,IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository)
+        public ProductsController(IWebHostEnvironment webHostEnvironment, IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository, IFileService fileService)
         {
             _webHostEnvironment = webHostEnvironment;
             _productWriteRepository = productWriteRepository;
             _productReadRepository = productReadRepository;
+            _fileService = fileService;
         }
 
         [HttpGet]                               //query den gönderdik
@@ -99,26 +101,42 @@ namespace ECommerenceAPI.API.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> Upload()
         {
-            //wwwroot/resource/product-image
-            string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "resource/product-images");
 
-            if (!Directory.Exists(uploadPath))
-            {
-                Directory.CreateDirectory(uploadPath);
-            }
-            Random random = new Random();
-            foreach (IFormFile file in Request.Form.Files) 
-            {
-                string fullPath = Path.Combine(uploadPath, $"{random.Next()}{Path.GetExtension(file.FileName)}");
-                using FileStream fileStream = new FileStream(fullPath, FileMode.Create, FileAccess.Write, FileShare.None,1024*1024,useAsync:false);
-                
-                await file.CopyToAsync(fileStream);
-                await fileStream.FlushAsync();
 
-                //dosya kaydı için path aldık rastegel isim verdik filestram kullamdık ve sonra onu serbest bıraktık
-
-            }
+            await _fileService.UploadAsync("resource/product-images", Request.Form.Files);
             return Ok();
+
+
+
+
+
+
+
+
+
+
+
+
+            ////wwwroot/resource/product-image
+            //string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "resource/product-images");
+
+            //if (!Directory.Exists(uploadPath))
+            //{
+            //    Directory.CreateDirectory(uploadPath);
+            //}
+            //Random random = new Random();
+            //foreach (IFormFile file in Request.Form.Files) 
+            //{
+            //    string fullPath = Path.Combine(uploadPath, $"{random.Next()}{Path.GetExtension(file.FileName)}");
+            //    using FileStream fileStream = new FileStream(fullPath, FileMode.Create, FileAccess.Write, FileShare.None,1024*1024,useAsync:false);
+
+            //    await file.CopyToAsync(fileStream);
+            //    await fileStream.FlushAsync();
+
+            //    //dosya kaydı için path aldık rastegel isim verdik filestram kullamdık ve sonra onu serbest bıraktık
+
+            //}
+            //return Ok();
         }
     }
 
