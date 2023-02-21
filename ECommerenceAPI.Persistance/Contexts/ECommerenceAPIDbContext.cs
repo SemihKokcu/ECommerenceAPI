@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using File = ECommerenceAPI.Domain.Entities.File;
 
 namespace ECommerenceAPI.Persistance.Contexts
 {
@@ -20,6 +21,11 @@ namespace ECommerenceAPI.Persistance.Contexts
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Customer> Customers { get; set; }
+
+        public DbSet<File> Files { get; set; }
+        public DbSet<ProductImageFile> ProductImageFiles { get; set; }
+        public DbSet<InvoiceFile> InvoiceFiles { get; set; }
+
 
         //gelen isteklerde araya girme
         //public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
