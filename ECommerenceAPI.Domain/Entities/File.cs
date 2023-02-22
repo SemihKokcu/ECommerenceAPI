@@ -12,6 +12,7 @@ namespace ECommerenceAPI.Domain.Entities
     {
         public string FileName { get; set; }
         public string Path { get; set; }
+        public string Storage { get; set; }
 
         [NotMapped] // dosya da update kullanmayacağız
         public override DateTime UpdateDate { get => base.UpdateDate; set => base.UpdateDate = value; }

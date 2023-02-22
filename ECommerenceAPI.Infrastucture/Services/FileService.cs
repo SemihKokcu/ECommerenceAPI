@@ -1,5 +1,4 @@
-﻿using ECommerenceAPI.Application.Services;
-using ECommerenceAPI.Infrastructure.StaticServices;
+﻿using ECommerenceAPI.Infrastructure.StaticServices;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ECommerenceAPI.Infrastructure.Services
 {
-    public class FileService : IFileService
+    public class FileService
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
 
