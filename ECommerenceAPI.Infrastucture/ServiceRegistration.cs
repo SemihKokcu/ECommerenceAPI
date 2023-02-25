@@ -1,7 +1,7 @@
 ﻿using ECommerenceAPI.Application.Abstractions.Storage;
 using ECommerenceAPI.Infrastructure.Enums;
-using ECommerenceAPI.Infrastructure.Services;
 using ECommerenceAPI.Infrastructure.Services.Storage;
+using ECommerenceAPI.Infrastructure.Services.Storage.Azure;
 using ECommerenceAPI.Infrastructure.Services.Storage.Local;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -18,12 +18,13 @@ namespace ECommerenceAPI.Infrastructure
         {
             serviceCollection.AddScoped<IStorageService, StorageService>();
         }
-        public static void AddStorage<T> (this IServiceCollection serviceCollection) where T : class, IStorage
+        //daha sağlıklı
+        public static void AddStorage<T> (this IServiceCollection serviceCollection) where T : Storage, IStorage
         {
             serviceCollection.AddScoped<IStorage,T>();
         }
 
-        //kullanım şekli
+        //kullanım şekli --> tam doğru bir kullanış değildir
         public static void AddStorage(this IServiceCollection serviceCollection, StorageType storageType)
         {
             switch (storageType) 
@@ -32,6 +33,7 @@ namespace ECommerenceAPI.Infrastructure
                     serviceCollection.AddScoped<IStorage,LocalStorage>();
                     break;
                 case StorageType.Azure:
+                    serviceCollection.AddScoped<IStorage, AzureStorage>();
                     break;
                 case StorageType.AWS:
                     break;

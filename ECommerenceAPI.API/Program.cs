@@ -1,6 +1,7 @@
 ﻿using ECommerenceAPI.Application.Validators;
 using ECommerenceAPI.Infrastructure;
 using ECommerenceAPI.Infrastructure.Filters;
+using ECommerenceAPI.Infrastructure.Services.Storage.Azure;
 using ECommerenceAPI.Infrastructure.Services.Storage.Local;
 using ECommerenceAPI.Persistance;
 using FluentValidation.AspNetCore;
@@ -11,7 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddPersistanceServices();
 builder.Services.AddInfrastructureServices();
-builder.Services.AddStorage<LocalStorage>(); // mimari storage yönlendirilmesi
+builder.Services.AddStorage<AzureStorage>(); // mimari storage yönlendirilmesi
+//builder.Services.AddStorage<LocalStorage>(); // mimari storage yönlendirilmesi
+
 //builder.Services.AddStorage(ECommerenceAPI.Infrastructure.Enums.StorageType.Local);
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
   policy.WithOrigins("http://localhost:4200", "https://localhost:4200").AllowAnyHeader().AllowAnyMethod()
