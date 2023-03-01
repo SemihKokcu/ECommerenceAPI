@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerenceAPI.Application.Features.Commands.CreateProduct
+namespace ECommerenceAPI.Application.Features.Commands.Product.CreateProduct
 {
     public class CreateProductCommandHandler : IRequestHandler<CreateProductCommandRequest, CreateProductCommandResponse>
     {
@@ -20,7 +20,7 @@ namespace ECommerenceAPI.Application.Features.Commands.CreateProduct
 
         public async Task<CreateProductCommandResponse> Handle(CreateProductCommandRequest request, CancellationToken cancellationToken)
         {
-            await _productWriteRepository.AddAsync(new Product()
+            await _productWriteRepository.AddAsync(new Domain.Entities.Product()
             {
                 Name = request.Name,
                 Price = request.Price,
