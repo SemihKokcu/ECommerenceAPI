@@ -1,4 +1,5 @@
-﻿using ECommerenceAPI.Application.Validators;
+﻿using ECommerenceAPI.Application;
+using ECommerenceAPI.Application.Validators;
 using ECommerenceAPI.Infrastructure;
 using ECommerenceAPI.Infrastructure.Filters;
 using ECommerenceAPI.Infrastructure.Services.Storage.Azure;
@@ -12,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddPersistanceServices();
 builder.Services.AddInfrastructureServices();
+builder.Services.AddApplicationService();
 builder.Services.AddStorage<AzureStorage>(); // mimari storage yönlendirilmesi
 //builder.Services.AddStorage<LocalStorage>(); // mimari storage yönlendirilmesi
 
@@ -24,6 +26,7 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
 //kendi filterımızı ekledik
 builder.Services.AddControllers(options=>options.Filters.Add<ValidationFilter>())// reflection ile bütün validatorleri ekleyecek otoatik
     .AddFluentValidation(conf=>conf.RegisterValidatorsFromAssemblyContaining<CreateProductValidator>())
+
     .ConfigureApiBehaviorOptions(options=>options.SuppressModelStateInvalidFilter=true); // mevcut olan default filterları görmezden gelmesi için yazdık. Yani 
 // api'de controllere gelmeden oto hatalrı yakalamamsı için
 builder.Services.AddEndpointsApiExplorer();
