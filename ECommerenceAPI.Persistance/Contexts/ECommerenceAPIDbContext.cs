@@ -1,5 +1,7 @@
 ﻿using ECommerenceAPI.Domain.Entities;
 using ECommerenceAPI.Domain.Entities.Common;
+using ECommerenceAPI.Domain.Entities.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
@@ -11,7 +13,7 @@ using File = ECommerenceAPI.Domain.Entities.File;
 
 namespace ECommerenceAPI.Persistance.Contexts
 {
-    public class ECommerenceAPIDbContext : DbContext
+    public class ECommerenceAPIDbContext : IdentityDbContext<AppUser,AppRole,string>
     {
         public ECommerenceAPIDbContext(DbContextOptions options) : base(options)
         {
