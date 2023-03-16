@@ -25,7 +25,7 @@ namespace ECommerenceAPI.API.Controllers
             return Ok(createUserCommandResponse);
         }
 
-        [HttpPost("action")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Login(LoginUserCommandRequest loginUserCommandRequest)
         {
             LoginUserCommandResponse loginUserCommandResponse = await _mediator.Send(loginUserCommandRequest);
