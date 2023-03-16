@@ -12,7 +12,6 @@ using ECommerenceAPI.Application.RequestParametres;
 using ECommerenceAPI.Application.ViewModels.Products;
 using ECommerenceAPI.Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -21,7 +20,6 @@ namespace ECommerenceAPI.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = "Admin")]
     public class ProductsController : ControllerBase
     {
 

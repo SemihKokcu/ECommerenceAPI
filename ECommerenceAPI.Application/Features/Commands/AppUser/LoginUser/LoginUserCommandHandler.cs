@@ -1,7 +1,4 @@
-﻿using ECommerenceAPI.Application.Abstractions.Token;
-using ECommerenceAPI.Application.DTOs;
-using ECommerenceAPI.Application.Exceptions;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -15,19 +12,19 @@ namespace ECommerenceAPI.Application.Features.Commands.AppUser.LoginUser
     {
         readonly UserManager<Domain.Entities.Identity.AppUser> _userManager;
         readonly SignInManager<Domain.Entities.Identity.AppUser> _signInManager;
-        readonly ITokenHandler _tokenHandler;
 
-        public LoginUserCommandHandler(UserManager<Domain.Entities.Identity.AppUser> userManager, SignInManager<Domain.Entities.Identity.AppUser> signInManager, ITokenHandler tokenHandler)
+
+        public LoginUserCommandHandler(UserManager<Domain.Entities.Identity.AppUser> userManager, SignInManager<Domain.Entities.Identity.AppUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _tokenHandler = tokenHandler;
         }
 
         public async Task<LoginUserCommandResponse> Handle(LoginUserCommandRequest request, CancellationToken cancellationToken)
         {
             Domain.Entities.Identity.AppUser user =  await _userManager.FindByNameAsync(request.UserNameOrEmail);
             if (user ==null)
+            
                 user = await _userManager.FindByEmailAsync(request.UserNameOrEmail);
 
             if (user == null)
@@ -37,22 +34,12 @@ namespace ECommerenceAPI.Application.Features.Commands.AppUser.LoginUser
 
             if (result.Succeeded) // auth success
             {
-                Token token = _tokenHandler.CreateAccessToken(5);
-                return new LoginUserSuccessCommandResponse()
-                {
-                    Token = token
-                };
+                //todo yetkileri belirle
             }
 
-            //return new LoginUserErrorCommandResponse()
-            //{
-            //    Message = "Kullanıcı adı veya şifre hatalıdır"
-            //};
-
-            throw new AuthenticationErrorExeption();   
-
-
-
+            return new();
+                        
+            
 
         }
     }
