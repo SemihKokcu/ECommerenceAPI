@@ -9,8 +9,7 @@ namespace ECommerenceAPI.Domain.Entities.Identity
 {
     public class AppUser : IdentityUser<string>
     {
-        public string Name { get; set; }
-        public string SurName { get; set; }
+        public string NameSurname { get; set; }
 
     }
 }

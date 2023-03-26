@@ -22,8 +22,7 @@ namespace ECommerenceAPI.Application.Features.Commands.AppUser.CreateUser
             {
                 Id = Guid.NewGuid().ToString(),
                 UserName = request.UserName,
-                Name = request.Name,
-                SurName = request.SurName,
+                NameSurname = request.NameSurname,
                 Email = request.Email,
 
             },request.Password);
