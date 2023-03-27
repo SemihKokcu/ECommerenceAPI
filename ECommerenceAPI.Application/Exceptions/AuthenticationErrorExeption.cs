@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECommerenceAPI.Application.Exceptions
 {
-    internal class AuthenticationErrorExeption : Exception
+    public class AuthenticationErrorExeption : Exception
     {
         public AuthenticationErrorExeption() : base("Kimlik doğrulama hatası")
         {

@@ -15,6 +15,7 @@ namespace ECommerenceAPI.Application
         {
             //collection.AddMediatR(typeof(ServiceRegistriation)); // mediatr kendi buluyor
             collection.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+            collection.AddHttpClient();
         }
     }
 }

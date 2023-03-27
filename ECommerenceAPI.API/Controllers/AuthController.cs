@@ -1,5 +1,4 @@
-﻿using ECommerenceAPI.Application.Features.Commands.AppUser.CreateUser;
-using ECommerenceAPI.Application.Features.Commands.AppUser.FacebookLogin;
+﻿using ECommerenceAPI.Application.Features.Commands.AppUser.FacebookLogin;
 using ECommerenceAPI.Application.Features.Commands.AppUser.GoogleLogin;
 using ECommerenceAPI.Application.Features.Commands.AppUser.LoginUser;
 using MediatR;
@@ -10,24 +9,15 @@ namespace ECommerenceAPI.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class AuthController : ControllerBase
     {
         readonly IMediator _mediator;
 
-        public UsersController(IMediator mediator)
+        public AuthController(IMediator mediator)
         {
             this._mediator = mediator;
         }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateUser(CreateUserCommandRequest createUserCommandRequest)
-        {
-            CreateUserCommandResponse createUserCommandResponse = await _mediator.Send(createUserCommandRequest);
-
-            return Ok(createUserCommandResponse);
-        }
-
-        [HttpPost("[action]")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login(LoginUserCommandRequest loginUserCommandRequest)
         {
             LoginUserCommandResponse loginUserCommandResponse = await _mediator.Send(loginUserCommandRequest);
@@ -48,6 +38,5 @@ namespace ECommerenceAPI.API.Controllers
             FacebookLoginCommandResponse response = await _mediator.Send(facebookLoginCommandRequest);
             return Ok(response);
         }
-
     }
 }

@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using ECommerenceAPI.Application.Repositories;
 using ECommerenceAPI.Persistance.Repositories;
 using ECommerenceAPI.Domain.Entities.Identity;
+using ECommerenceAPI.Application.Abstractions.Services;
+using ECommerenceAPI.Persistance.Services;
+using ECommerenceAPI.Application.Abstractions.Services.Authentication;
 
 namespace ECommerenceAPI.Persistance
 {
@@ -49,6 +52,10 @@ namespace ECommerenceAPI.Persistance
             services.AddScoped<IInvoiceFileReadRepository, InvoiceFileReadRepository>();
             services.AddScoped<IInvoiceFileWriteRepository, InvoiceFileWriteRepository>();
 
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IExternalAuthentication,AuthService>();
+            services.AddScoped<IInternalAuthentication, AuthService>();
 
         }
     }
