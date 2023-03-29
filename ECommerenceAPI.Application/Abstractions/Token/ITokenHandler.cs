@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ECommerenceAPI.Domain.Entities.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,9 @@ namespace ECommerenceAPI.Application.Abstractions.Token
 {
     public interface ITokenHandler
     {
-        T.Token CreateAccessToken(int second);
+        T.Token CreateAccessToken(int second,AppUser user);
+
+        string CreateRefreshToken();
 
     }
 }

@@ -8,6 +8,8 @@ namespace ECommerenceAPI.Application.Abstractions.Services.Authentication
 {
     public interface IInternalAuthentication
     {
-        Task<DTOs.Token> LoginAsync(string UserNameOrEmail,string password,int tokenLifeTime);
+        Task<DTOs.Token> LoginAsync(string UserNameOrEmail, string password, int tokenLifeTime);
+        Task<DTOs.Token> RefreshTokenLoginAsync(string refreshToken);
+
     }
 }

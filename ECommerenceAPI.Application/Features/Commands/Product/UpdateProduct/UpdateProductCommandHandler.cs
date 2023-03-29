@@ -1,5 +1,6 @@
 ﻿using ECommerenceAPI.Application.Repositories;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,12 @@ namespace ECommerenceAPI.Application.Features.Commands.Product.UpdateProduct
     {
         readonly IProductWriteRepository _productWriteRepository;
         readonly IProductReadRepository _productReadRepository;
-
-        public UpdateProductCommandHandler(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository)
+        readonly ILogger<UpdateProductCommandHandler> _logger;
+        public UpdateProductCommandHandler(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository, ILogger<UpdateProductCommandHandler> logger)
         {
             _productWriteRepository = productWriteRepository;
             _productReadRepository = productReadRepository;
+            _logger = logger;
         }
 
         public async Task<UpdateProductCommandResponse> Handle(UpdateProductCommandRequest request, CancellationToken cancellationToken)
@@ -28,6 +30,7 @@ namespace ECommerenceAPI.Application.Features.Commands.Product.UpdateProduct
             //gelen veri track edildiği için ef nin sağlamış olduğu update fonksiyonunu kullanmamzıa gerek yoktur.
             //Burada saveChanges edildiğinde update olacaktır
             await _productWriteRepository.SaveAsync();
+            _logger.LogInformation("Product Güncellendi");
             return new();
         }
     }
