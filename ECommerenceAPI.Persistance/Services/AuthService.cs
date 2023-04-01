@@ -99,7 +99,7 @@ namespace ECommerenceAPI.Persistance.Services
             if (result.Succeeded) // auth success
             {
                 Token token = _tokenHandler.CreateAccessToken(tokenLifeTime,user);
-                await _userService.UpdateRefreshToken(token.RefreshToken, user, token.Expiration, 15);
+                await _userService.UpdateRefreshToken(token.RefreshToken, user, token.Expiration, 300);
 
                 return token;
                 
@@ -114,7 +114,7 @@ namespace ECommerenceAPI.Persistance.Services
             if (user !=null && user.RefreshTokenEndDate > DateTime.UtcNow)
             {
                 Token token = _tokenHandler.CreateAccessToken(15,user);
-                await _userService.UpdateRefreshToken(token.RefreshToken, user,token.Expiration,15);
+                await _userService.UpdateRefreshToken(token.RefreshToken, user,token.Expiration,300);
                 return token;
             }
             else
@@ -150,7 +150,7 @@ namespace ECommerenceAPI.Persistance.Services
                     await _userManager.AddLoginAsync(user, info);
 
                     Token token = _tokenHandler.CreateAccessToken(tokenLifeTime, user);
-                    await _userService.UpdateRefreshToken(token.RefreshToken, user, token.Expiration,15);
+                    await _userService.UpdateRefreshToken(token.RefreshToken, user, token.Expiration,300);
                     return token;
                 }
              throw new Exception("Invalid Exrernal Authentication");

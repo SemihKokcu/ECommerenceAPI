@@ -16,6 +16,8 @@ using Serilog.Sinks.PostgreSQL;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.HttpLogging;
+using ECommerenceAPI.API.Extensions;
+using ECommerenceAPI.SignalR;
 var builder = WebApplication.CreateBuilder(args);
 
 //policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()
@@ -25,10 +27,11 @@ builder.Services.AddInfrastructureServices();
 builder.Services.AddApplicationService();
 builder.Services.AddStorage<AzureStorage>(); // mimari storage yönlendirilmesi
 //builder.Services.AddStorage<LocalStorage>(); // mimari storage yönlendirilmesi
+builder.Services.AddSignalRServices();
 
 //builder.Services.AddStorage(ECommerenceAPI.Infrastructure.Enums.StorageType.Local);
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
-  policy.WithOrigins("http://localhost:4200", "https://localhost:4200").AllowAnyHeader().AllowAnyMethod()
+  policy.WithOrigins("http://localhost:4200", "https://localhost:4200").AllowAnyHeader().AllowAnyMethod().AllowCredentials()
 
 ));
 Logger log = new LoggerConfiguration()
@@ -99,8 +102,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseStaticFiles();
 
+app.UseStaticFiles();
+app.ConfigureExceptionHandler<Program>(app.Services.GetRequiredService<ILogger<Program>>());
 app.UseSerilogRequestLogging();
 app.UseHttpLogging();
 app.UseCors();
@@ -118,5 +122,5 @@ app.Use(async (context, next) =>
 });
 
 app.MapControllers();
-
+app.MapHubs();
 app.Run();
