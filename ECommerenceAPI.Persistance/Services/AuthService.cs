@@ -111,7 +111,7 @@ namespace ECommerenceAPI.Persistance.Services
         public async Task<Token> RefreshTokenLoginAsync(string refreshToken)
         {
             AppUser? user = await _userManager.Users.FirstOrDefaultAsync(u=>u.RefreshToken == refreshToken);
-            if (user !=null && user.RefreshTokenEndDate > DateTime.UtcNow)
+            if (user !=null && user?.RefreshTokenEndDate > DateTime.UtcNow)
             {
                 Token token = _tokenHandler.CreateAccessToken(15,user);
                 await _userService.UpdateRefreshToken(token.RefreshToken, user,token.Expiration,300);
