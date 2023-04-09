@@ -3,6 +3,7 @@ using System;
 using ECommerenceAPI.Persistance.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ECommerenceAPI.Persistance.Migrations
 {
     [DbContext(typeof(ECommerenceAPIDbContext))]
-    partial class ECommerenceAPIDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230402110750_mig_12")]
+    partial class mig12
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,6 +54,9 @@ namespace ECommerenceAPI.Persistance.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("text");
+
                     b.Property<Guid>("BasketId")
                         .HasColumnType("uuid");
 
@@ -67,6 +73,8 @@ namespace ECommerenceAPI.Persistance.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
 
                     b.HasIndex("BasketId");
 
@@ -233,14 +241,12 @@ namespace ECommerenceAPI.Persistance.Migrations
             modelBuilder.Entity("ECommerenceAPI.Domain.Entities.Order", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<Guid>("BasketId")
-                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("timestamp with time zone");
@@ -448,7 +454,7 @@ namespace ECommerenceAPI.Persistance.Migrations
             modelBuilder.Entity("ECommerenceAPI.Domain.Entities.Basket", b =>
                 {
                     b.HasOne("ECommerenceAPI.Domain.Entities.Identity.AppUser", "User")
-                        .WithMany("Baskets")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -458,6 +464,10 @@ namespace ECommerenceAPI.Persistance.Migrations
 
             modelBuilder.Entity("ECommerenceAPI.Domain.Entities.BasketItem", b =>
                 {
+                    b.HasOne("ECommerenceAPI.Domain.Entities.Identity.AppUser", null)
+                        .WithMany("BasketItems")
+                        .HasForeignKey("AppUserId");
+
                     b.HasOne("ECommerenceAPI.Domain.Entities.Basket", "Basket")
                         .WithMany("BasketItems")
                         .HasForeignKey("BasketId")
@@ -482,14 +492,6 @@ namespace ECommerenceAPI.Persistance.Migrations
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("ECommerenceAPI.Domain.Entities.Basket", "Basket")
-                        .WithOne("Order")
-                        .HasForeignKey("ECommerenceAPI.Domain.Entities.Order", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Basket");
 
                     b.Navigation("Customer");
                 });
@@ -578,9 +580,6 @@ namespace ECommerenceAPI.Persistance.Migrations
             modelBuilder.Entity("ECommerenceAPI.Domain.Entities.Basket", b =>
                 {
                     b.Navigation("BasketItems");
-
-                    b.Navigation("Order")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("ECommerenceAPI.Domain.Entities.Customer", b =>
@@ -590,7 +589,7 @@ namespace ECommerenceAPI.Persistance.Migrations
 
             modelBuilder.Entity("ECommerenceAPI.Domain.Entities.Identity.AppUser", b =>
                 {
-                    b.Navigation("Baskets");
+                    b.Navigation("BasketItems");
                 });
 #pragma warning restore 612, 618
         }

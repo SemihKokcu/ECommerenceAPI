@@ -22,6 +22,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 //policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()
 
+builder.Services.AddHttpContextAccessor();// Clien'tan gelen request sonucunda oluşturulan httpcontext nesnsine katmanlardaki class'lardan erişmemizi sağlayan bir servistir
 builder.Services.AddPersistanceServices();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddApplicationService();

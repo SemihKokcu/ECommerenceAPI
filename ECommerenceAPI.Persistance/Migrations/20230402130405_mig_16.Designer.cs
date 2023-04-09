@@ -3,6 +3,7 @@ using System;
 using ECommerenceAPI.Persistance.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ECommerenceAPI.Persistance.Migrations
 {
     [DbContext(typeof(ECommerenceAPIDbContext))]
-    partial class ECommerenceAPIDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230402130405_mig_16")]
+    partial class mig16
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -448,7 +451,7 @@ namespace ECommerenceAPI.Persistance.Migrations
             modelBuilder.Entity("ECommerenceAPI.Domain.Entities.Basket", b =>
                 {
                     b.HasOne("ECommerenceAPI.Domain.Entities.Identity.AppUser", "User")
-                        .WithMany("Baskets")
+                        .WithMany("Basket")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -590,7 +593,7 @@ namespace ECommerenceAPI.Persistance.Migrations
 
             modelBuilder.Entity("ECommerenceAPI.Domain.Entities.Identity.AppUser", b =>
                 {
-                    b.Navigation("Baskets");
+                    b.Navigation("Basket");
                 });
 #pragma warning restore 612, 618
         }
