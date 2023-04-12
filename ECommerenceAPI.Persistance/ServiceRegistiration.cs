@@ -58,12 +58,14 @@ namespace ECommerenceAPI.Persistance
             services.AddScoped<IBasketReadRepository, BasketReadRepository>();
             services.AddScoped<IBasketWriteRepository, BasketWriteRepository>();
 
-            services.AddScoped<IBasketService, BasketService>();
 
+            services.AddScoped<IBasketService, BasketService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IExternalAuthentication,AuthService>();
             services.AddScoped<IInternalAuthentication, AuthService>();
+            services.AddScoped<IOrderService, OrderService>();
+
 
         }
     }

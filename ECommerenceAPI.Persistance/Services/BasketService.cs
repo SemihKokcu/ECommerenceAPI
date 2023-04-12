@@ -124,5 +124,14 @@ namespace ECommerenceAPI.Persistance.Services
             }
             throw new Exception("Beklenmeyen bir hatayla karşılaşıldı...");
         }
+
+        public  Basket? GetUserActiveBasket
+        {
+            get
+            {
+                Basket? basket = ContextUser().Result;
+                return basket;
+            }
+        }
     }
 }
