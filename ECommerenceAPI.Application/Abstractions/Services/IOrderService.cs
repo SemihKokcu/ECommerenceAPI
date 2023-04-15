@@ -10,5 +10,6 @@ namespace ECommerenceAPI.Application.Abstractions.Services
     public interface IOrderService
     {
         Task CreateOrderAsync(CreateOrder createOrder);
+        Task<ListOrder> GetAllOrderAsync(int page,int size);
     }
 }

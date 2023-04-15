@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ECommerenceAPI.Persistance.Migrations
 {
     [DbContext(typeof(ECommerenceAPIDbContext))]
-    [Migration("20230402123739_mig_14")]
-    partial class mig14
+    [Migration("20230414175424_mig_1")]
+    partial class mig1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,9 +54,6 @@ namespace ECommerenceAPI.Persistance.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("text");
-
                     b.Property<Guid>("BasketId")
                         .HasColumnType("uuid");
 
@@ -73,8 +70,6 @@ namespace ECommerenceAPI.Persistance.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
 
                     b.HasIndex("BasketId");
 
@@ -241,23 +236,20 @@ namespace ECommerenceAPI.Persistance.Migrations
             modelBuilder.Entity("ECommerenceAPI.Domain.Entities.Order", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("BasketId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("OrderCode")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -265,11 +257,6 @@ namespace ECommerenceAPI.Persistance.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BasketId")
-                        .IsUnique();
-
-                    b.HasIndex("CustomerId");
 
                     b.ToTable("Orders");
                 });
@@ -407,21 +394,6 @@ namespace ECommerenceAPI.Persistance.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("OrderProduct", b =>
-                {
-                    b.Property<Guid>("OrdersId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ProductsId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("OrdersId", "ProductsId");
-
-                    b.HasIndex("ProductsId");
-
-                    b.ToTable("OrderProduct");
-                });
-
             modelBuilder.Entity("ProductProductImageFile", b =>
                 {
                     b.Property<Guid>("ProductImageFilesId")
@@ -460,7 +432,7 @@ namespace ECommerenceAPI.Persistance.Migrations
             modelBuilder.Entity("ECommerenceAPI.Domain.Entities.Basket", b =>
                 {
                     b.HasOne("ECommerenceAPI.Domain.Entities.Identity.AppUser", "User")
-                        .WithMany()
+                        .WithMany("Baskets")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -470,10 +442,6 @@ namespace ECommerenceAPI.Persistance.Migrations
 
             modelBuilder.Entity("ECommerenceAPI.Domain.Entities.BasketItem", b =>
                 {
-                    b.HasOne("ECommerenceAPI.Domain.Entities.Identity.AppUser", null)
-                        .WithMany("BasketItems")
-                        .HasForeignKey("AppUserId");
-
                     b.HasOne("ECommerenceAPI.Domain.Entities.Basket", "Basket")
                         .WithMany("BasketItems")
                         .HasForeignKey("BasketId")
@@ -481,7 +449,7 @@ namespace ECommerenceAPI.Persistance.Migrations
                         .IsRequired();
 
                     b.HasOne("ECommerenceAPI.Domain.Entities.Product", "Product")
-                        .WithMany()
+                        .WithMany("BasketItems")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -495,19 +463,11 @@ namespace ECommerenceAPI.Persistance.Migrations
                 {
                     b.HasOne("ECommerenceAPI.Domain.Entities.Basket", "Basket")
                         .WithOne("Order")
-                        .HasForeignKey("ECommerenceAPI.Domain.Entities.Order", "BasketId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ECommerenceAPI.Domain.Entities.Customer", "Customer")
-                        .WithMany("Orders")
-                        .HasForeignKey("CustomerId")
+                        .HasForeignKey("ECommerenceAPI.Domain.Entities.Order", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Basket");
-
-                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -561,21 +521,6 @@ namespace ECommerenceAPI.Persistance.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("OrderProduct", b =>
-                {
-                    b.HasOne("ECommerenceAPI.Domain.Entities.Order", null)
-                        .WithMany()
-                        .HasForeignKey("OrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ECommerenceAPI.Domain.Entities.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ProductProductImageFile", b =>
                 {
                     b.HasOne("ECommerenceAPI.Domain.Entities.ProductImageFile", null)
@@ -599,12 +544,12 @@ namespace ECommerenceAPI.Persistance.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ECommerenceAPI.Domain.Entities.Customer", b =>
+            modelBuilder.Entity("ECommerenceAPI.Domain.Entities.Identity.AppUser", b =>
                 {
-                    b.Navigation("Orders");
+                    b.Navigation("Baskets");
                 });
 
-            modelBuilder.Entity("ECommerenceAPI.Domain.Entities.Identity.AppUser", b =>
+            modelBuilder.Entity("ECommerenceAPI.Domain.Entities.Product", b =>
                 {
                     b.Navigation("BasketItems");
                 });
