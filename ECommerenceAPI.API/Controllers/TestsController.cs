@@ -1,4 +1,5 @@
-﻿using ECommerenceAPI.Application.Repositories;
+﻿using ECommerenceAPI.Application.Abstractions.Services;
+using ECommerenceAPI.Application.Repositories;
 using ECommerenceAPI.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,13 +15,15 @@ namespace ECommerenceAPI.API.Controllers
         readonly private IOrderWriteRepository _orderWriteRepository;
         readonly private ICustomerWriteRepository _customerWriteRepository;
         readonly private IOrderReadRepository _orderReadRepository;
-        public TestsController(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository, IOrderWriteRepository orderWriteRepository, ICustomerWriteRepository customerWriteRepository, IOrderReadRepository orderReadRepository)
+        readonly private IMailService _mailService;
+        public TestsController(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository, IOrderWriteRepository orderWriteRepository, ICustomerWriteRepository customerWriteRepository, IOrderReadRepository orderReadRepository, IMailService mailService)
         {
             _productWriteRepository = productWriteRepository;
             _productReadRepository = productReadRepository;
             _orderWriteRepository = orderWriteRepository;
             _customerWriteRepository = customerWriteRepository;
             _orderReadRepository = orderReadRepository;
+            _mailService = mailService;
         }
         [HttpGet]
         // bu metot tipi Task yani async bir tip olmadığından Ioc containerda 
@@ -63,5 +66,7 @@ namespace ECommerenceAPI.API.Controllers
             return Ok(product);
 
         }
+
+      
     }
 }

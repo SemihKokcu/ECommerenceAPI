@@ -1,6 +1,8 @@
-﻿using ECommerenceAPI.Application.Abstractions.Storage;
+﻿using ECommerenceAPI.Application.Abstractions.Services;
+using ECommerenceAPI.Application.Abstractions.Storage;
 using ECommerenceAPI.Application.Abstractions.Token;
 using ECommerenceAPI.Infrastructure.Enums;
+using ECommerenceAPI.Infrastructure.Services;
 using ECommerenceAPI.Infrastructure.Services.Storage;
 using ECommerenceAPI.Infrastructure.Services.Storage.Azure;
 using ECommerenceAPI.Infrastructure.Services.Storage.Local;
@@ -20,6 +22,7 @@ namespace ECommerenceAPI.Infrastructure
         {
             serviceCollection.AddScoped<IStorageService, StorageService>();
             serviceCollection.AddScoped<ITokenHandler, TokenHandler>();
+            serviceCollection.AddScoped<IMailService,MailService>();
 
         }
         //daha sağlıklı

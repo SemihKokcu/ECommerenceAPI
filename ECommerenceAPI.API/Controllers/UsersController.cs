@@ -1,4 +1,5 @@
-﻿using ECommerenceAPI.Application.Features.Commands.AppUser.CreateUser;
+﻿using ECommerenceAPI.Application.Abstractions.Services;
+using ECommerenceAPI.Application.Features.Commands.AppUser.CreateUser;
 using ECommerenceAPI.Application.Features.Commands.AppUser.FacebookLogin;
 using ECommerenceAPI.Application.Features.Commands.AppUser.GoogleLogin;
 using ECommerenceAPI.Application.Features.Commands.AppUser.LoginUser;
@@ -13,10 +14,12 @@ namespace ECommerenceAPI.API.Controllers
     public class UsersController : ControllerBase
     {
         readonly IMediator _mediator;
+        readonly IMailService _mailService;
 
-        public UsersController(IMediator mediator)
+        public UsersController(IMediator mediator, IMailService mailService)
         {
             this._mediator = mediator;
+            this._mailService = mailService;
         }
 
         [HttpPost]
@@ -47,6 +50,13 @@ namespace ECommerenceAPI.API.Controllers
         {
             FacebookLoginCommandResponse response = await _mediator.Send(facebookLoginCommandRequest);
             return Ok(response);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> ExampleMailTest()
+        {
+            await _mailService.SendMessageAsync("ke_rem321@hotmail.com", "Siparişiniz tamamlandı aloooo", "Siparişiniz tamamlandı ve teslim edilmek üzere kargoya verildi kargo takip numaranız: kerbatgongotten3keremasallah");
+            return Ok();
         }
 
     }
